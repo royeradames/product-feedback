@@ -70,4 +70,24 @@ export class UsersController {
       res.status(404).json(error);
     }
   }
+  @Delete('/:userId')
+  async deleteUser(@Res() res, @Param('userId') userId: number) {
+    /* validation */
+    const userValidation = new usersValidation();
+    userValidation.userId = userId;
+    try {
+      await validateOrReject(userValidation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+    /* delete user by id */
+    try {
+      const deletedUserId = this.usersService.deleteUser(userId);
+      res.status(200).json(deletedUserId);
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
 }
