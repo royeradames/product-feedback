@@ -1,6 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
 import { Body, Post, Res } from '@nestjs/common';
-import { Comment } from './comments.service';
+import { Comment, Reply } from './comments.service';
 import { validateOrReject } from 'class-validator';
 import { CommentsService } from './comments.service';
 import CommentsValidation from './commentsValidation';
@@ -37,6 +37,43 @@ export class CommentsController {
       };
       const newComment = await this.commentsService.createComment(comment);
       res.status(201).json({ commentsId: newComment });
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+
+  @Post('/reply')
+  async createReply(
+    @Res() res,
+    @Body('productRequestsId') productRequestsId: Reply['productRequestsId'],
+    @Body('content') content: Reply['content'],
+    @Body('userId') userId: Reply['userId'],
+    @Body('replyingTo') replyingTo: Reply['replyingTo'],
+  ) {
+    /* validation */
+    const replyValiation = new CommentsValidation();
+    replyValiation.productRequestsId = productRequestsId;
+    replyValiation.content = content;
+    replyValiation.userId = userId;
+    replyValiation.replyingTo = replyingTo;
+    try {
+      await validateOrReject(replyValiation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+
+    /* create new reply */
+    const reply: Reply = {
+      productRequestsId,
+      content,
+      userId,
+      replyingTo,
+    };
+    try {
+      const newReplyId = await this.commentsService.createReply(reply);
+      res.status(201).json({ commentsId: newReplyId });
     } catch (error) {
       res.status(404).json(error);
     }
