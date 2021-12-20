@@ -18,4 +18,24 @@ export class UsersController {
   getCurrentUser() {
     return this.usersService.getCurrentUser();
   }
+  @Get('/:userId')
+  async getUserInfo(@Res() res, @Param('userId') userId: number) {
+    /* validation */
+    const userValidation = new usersValidation();
+    userValidation.userId = userId;
+    try {
+      await validateOrReject(userValidation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+    /* get user info */
+    try {
+      const user = await this.usersService.getUserById(userId);
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
 }
