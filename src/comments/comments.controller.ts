@@ -78,4 +78,27 @@ export class CommentsController {
       res.status(404).json(error);
     }
   }
+  @Delete('/:id')
+  async deleteComment(@Res() res, @Param('commentsId') commentsId: number) {
+    /* validate */
+    const commentValiation = new CommentsValidation();
+    commentValiation.commentsId = commentsId;
+    try {
+      await validateOrReject(commentValiation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+
+    /* delete comment */
+    try {
+      const deleteCommentId = await this.commentsService.deleteComment(
+        commentsId,
+      );
+      res.status(200).json(deleteCommentId);
+    } catch (errors) {
+      res.status(404).json(errors);
+    }
+  }
 }
