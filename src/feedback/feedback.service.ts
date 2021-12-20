@@ -5,6 +5,9 @@ export type NewFeedback = {
   category: 'feature' | 'enhancement' | 'bug' | 'UI' | 'UX';
   description: string;
 };
+export interface EditFeedback extends NewFeedback {
+  status: 'suggestion' | 'planned' | 'in-progress' | 'live';
+}
 
 @Injectable()
 export class FeedbackService {}
