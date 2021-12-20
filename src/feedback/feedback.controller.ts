@@ -15,6 +15,11 @@ import FeedbackValitation from './feedbackValidation';
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
+  @Get()
+  allFeedback() {
+    /* get feedback */
+    return this.feedbackService.allFeedback();
+  }
   @Get('/:feedbackId')
   async getFeedbackById(
     @Res() res,
@@ -64,6 +69,11 @@ export class FeedbackController {
     } catch (error) {
       res.status(404).json({ message: 'There was an error.' });
     }
+  }
+
+  @Get('/status/planned')
+  getfeedbackPlanned() {
+    return this.feedbackService.getfeedbackStatusPlanned();
   }
   @Post()
   async createFeedback(
@@ -139,6 +149,32 @@ export class FeedbackController {
         newFeedback,
       );
       res.status(200).json(updateMessage);
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+  @Put('/:id/upvotes')
+  async updateFeedbackUpvotes(
+    @Res() res,
+    @Param('id') productRequestsId: number,
+  ) {
+    /* validation */
+    const feedbackValitation = new FeedbackValitation();
+    feedbackValitation.productRequestsId = productRequestsId;
+    try {
+      await validateOrReject(feedbackValitation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+
+    /* increase feedback upvotes */
+    try {
+      const updatedFeebackId = await this.feedbackService.updateFeedbackUpvotes(
+        productRequestsId,
+      );
+      res.status(200).json(updatedFeebackId);
     } catch (error) {
       res.status(404).json(error);
     }
