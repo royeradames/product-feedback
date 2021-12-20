@@ -109,4 +109,13 @@ describe('AppController (e2e)', () => {
       });
     });
   });
+  it('delete feedback', async () => {
+    const res = await request(app.getHttpServer()).delete(
+      `/feedback/${editFeedbackId}`,
+    );
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      message: 'Feedback deleted successfully',
+    });
+  });
 });
