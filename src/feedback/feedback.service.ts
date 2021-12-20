@@ -16,6 +16,10 @@ export interface Feedback extends EditFeedback {
 
 @Injectable()
 export class FeedbackService {
+  // get all productFeedback subjections
+  allFeedback() {
+    return db('productRequests');
+  }
   async getFeedbackById(productRequestsId: number) {
     try {
       const feedback = await db('productRequests')
