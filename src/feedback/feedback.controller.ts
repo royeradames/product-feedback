@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
-import { FeedbackService, NewFeedback } from './feedback.service';
+import { FeedbackService, NewFeedback, EditFeedback } from './feedback.service';
 import FeedbackValitation from './feedbackValidation';
 @Controller('/feedback')
 export class FeedbackController {
@@ -60,6 +60,50 @@ export class FeedbackController {
     try {
       const feedbackId = await this.feedbackService.createFeedback(newFeedback);
       res.status(201).json({ productRequestsId: feedbackId });
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+  @Put('/:productRequestsId')
+  async updateFeedback(
+    @Res() res,
+    @Param('productRequestsId') productRequestsId: number,
+    @Body('title') title: EditFeedback['title'],
+    @Body('description') description: EditFeedback['description'],
+    @Body('category') category: EditFeedback['category'],
+    @Body('status') status: EditFeedback['status'],
+  ) {
+    /* validation */
+    const feedbackValitation = new FeedbackValitation();
+    feedbackValitation.productRequestsId = productRequestsId;
+    // validate a value that as been changed
+    if (title) feedbackValitation.title = title;
+    if (description) feedbackValitation.description = description;
+    if (title) feedbackValitation.category = category;
+    if (status) feedbackValitation.status = status;
+    const noNewFields = !title && !description && !category && !status;
+    if (noNewFields) res.status(422).json({ message: 'No fields to update' });
+    // apply validation
+    try {
+      await validateOrReject(feedbackValitation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+    const newFeedback: EditFeedback = {
+      title,
+      description,
+      category,
+      status,
+    };
+
+    try {
+      const updateMessage = await this.feedbackService.updateFeedback(
+        productRequestsId,
+        newFeedback,
+      );
+      res.status(200).json(updateMessage);
     } catch (error) {
       res.status(404).json(error);
     }
