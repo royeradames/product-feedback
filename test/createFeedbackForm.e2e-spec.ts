@@ -5,7 +5,7 @@ import { AppModule } from './../src/app.module';
 import db from '../src/db/dbConfig';
 import { NewFeedback } from '../src/feedback/feedback.service';
 
-describe('AppController (e2e)', () => {
+describe('Create Feedback Form (e2e)', () => {
   let app: INestApplication;
   beforeAll(async () => {
     /* reset db  */
