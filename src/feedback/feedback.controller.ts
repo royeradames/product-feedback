@@ -70,6 +70,10 @@ export class FeedbackController {
       res.status(404).json({ message: 'There was an error.' });
     }
   }
+  @Get('/status/suggestions')
+  getProductFeedbackSubjections() {
+    return this.feedbackService.getProductFeedbackSuggestions();
+  }
   @Get('/status/in-progress')
   getfeedbackInProgress() {
     return this.feedbackService.getfeedbackStatusInProgress();
