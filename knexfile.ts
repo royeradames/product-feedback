@@ -25,14 +25,12 @@ export default {
   testing: {
     client: 'sqlite3',
     connection: {
-      filename: ':memory',
+      filename: ':memory:',
     },
     useNullAsDefault: true,
     migrations: {
-      directory: {
-        directory: './src/db/migrations',
-        tableName: 'knex_migrations',
-      },
+      directory: './src/db/migrations',
+      tableName: 'knex_migrations',
     },
     seeds: {
       directory: './src/db/seeds',
