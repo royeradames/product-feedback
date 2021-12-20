@@ -51,4 +51,22 @@ describe('feedback detail page', () => {
       });
     });
   });
+  // create new comment
+
+  it('create new comment', async () => {
+    const newComment: Comment = {
+      productRequestsId: 1,
+      content: 'test',
+      userId: 1,
+    };
+
+    const res = await request(app.getHttpServer())
+      .post(`/comments`)
+      .send(newComment);
+    expect(res.status).toBe(201);
+    // check that all the feedback comments and replies have the spected fields
+    expect(res.body).toMatchObject({
+      commentsId: expect.any(Number),
+    });
+  });
 });
