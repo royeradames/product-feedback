@@ -28,4 +28,12 @@ export class UsersService {
       throw error(error);
     }
   }
+  async createUser(user: User) {
+    try {
+      const newUserId = await db('users').insert(user);
+      return newUserId;
+    } catch (error) {
+      throw error(error);
+    }
+  }
 }
