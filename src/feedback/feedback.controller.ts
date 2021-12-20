@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { FeedbackService, NewFeedback } from './feedback.service';
 import FeedbackValitation from './feedbackValidation';
@@ -6,6 +6,30 @@ import FeedbackValitation from './feedbackValidation';
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
+  @Get('/:feedbackId')
+  async getFeedbackById(
+    @Res() res,
+    @Param('feedbackId') productRequestsId: number,
+  ) {
+    const feedbackValiation = new FeedbackValitation();
+    feedbackValiation.productRequestsId = productRequestsId;
+    try {
+      await validateOrReject(feedbackValiation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+    /* get feedback */
+    try {
+      const feedback = await this.feedbackService.getFeedbackById(
+        productRequestsId,
+      );
+      res.status(200).json(feedback);
+    } catch (error) {
+      res.status(404).json({ message: 'There was an error.' });
+    }
+  }
   @Post()
   async createFeedback(
     @Res() res,
