@@ -69,4 +69,22 @@ describe('feedback detail page', () => {
       commentsId: expect.any(Number),
     });
   });
+
+  // create new reply
+  const newReply: Reply = {
+    productRequestsId: 1,
+    content: 'test',
+    userId: 1,
+    replyingTo: 'upbeat1811',
+  };
+  it('create new reply', async () => {
+    const res = await request(app.getHttpServer())
+      .post(`/comments/reply`)
+      .send(newReply);
+    expect(res.status).toBe(201);
+    // check that all the feedback comments and replies have the spected fields
+    expect(res.body).toMatchObject({
+      commentsId: expect.any(Number),
+    });
+  });
 });
