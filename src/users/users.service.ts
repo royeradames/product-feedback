@@ -19,4 +19,13 @@ export class UsersService {
       throw error(error);
     }
   }
+  async getUserById(userId: number) {
+    try {
+      const user = await db('users').where({ userId }).first();
+      if (!user) throw new Error('User not found');
+      return user;
+    } catch (error) {
+      throw error(error);
+    }
+  }
 }
