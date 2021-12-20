@@ -29,6 +29,15 @@ export class FeedbackService {
     }
   }
 
+  // get all feedbacks with status of planned
+  getfeedbackStatusInProgress() {
+    try {
+      return db('productRequests').where({ status: 'in-progress' });
+    } catch (error) {
+      return { message: 'There was an error' };
+    }
+  }
+
   // get feedback comments and replys
   async getFeedbackComments(productRequestsId: number) {
     try {
