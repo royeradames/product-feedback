@@ -16,6 +16,19 @@ export interface Feedback extends EditFeedback {
 
 @Injectable()
 export class FeedbackService {
+  async getFeedbackById(productRequestsId: number) {
+    try {
+      const feedback = await db('productRequests')
+        .where({ productRequestsId })
+        .first();
+      if (!feedback) throw new Error("Feedback doesn't exist");
+
+      return feedback;
+    } catch (error) {
+      throw new Error('There was an error');
+    }
+  }
+
   // create a new feedback
   async createFeedback(newFeedbackInput: NewFeedback) {
     // initialize upvotes
