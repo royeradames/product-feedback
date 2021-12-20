@@ -91,6 +91,18 @@ export class FeedbackService {
     }
   }
 
+  // update(increase) feedback upvotes
+  async updateFeedbackUpvotes(id: number) {
+    try {
+      await db('productRequests')
+        .where({ productRequestsId: id })
+        .increment('upvotes');
+      return { message: 'Feedback upvoted successfully' };
+    } catch (error) {
+      throw error(error);
+    }
+  }
+
   // delete feedback and all its comments
   async deleteFeedback(id: number) {
     try {
