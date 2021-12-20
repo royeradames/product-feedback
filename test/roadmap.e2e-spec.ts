@@ -38,4 +38,21 @@ describe('roadmap page (e2e)', () => {
       });
     });
   });
+  it('render feedback in-progress', async () => {
+    const res = await request(app.getHttpServer()).get(
+      `/feedback/status/in-progress`,
+    );
+    expect(res.status).toBe(200);
+    // check that all the feedback the spected fields
+    res.body?.forEach((feedback) => {
+      expect(feedback).toMatchObject({
+        productRequestsId: expect.any(Number),
+        title: expect.any(String),
+        category: expect.any(String),
+        upvotes: expect.any(Number),
+        status: 'in-progress',
+        description: expect.any(String),
+      });
+    });
+  });
 });
