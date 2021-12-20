@@ -39,6 +39,32 @@ export class FeedbackController {
       res.status(404).json({ message: 'There was an error.' });
     }
   }
+  @Get('/:productRequestsId/comments')
+  async getFeedbackComments(
+    @Res() res,
+    @Param('productRequestsId') productRequestsId: number,
+  ) {
+    /* validation */
+    const feedbackValiation = new FeedbackValitation();
+    feedbackValiation.productRequestsId = productRequestsId;
+    try {
+      await validateOrReject(feedbackValiation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+
+    /* get feedback comments */
+    try {
+      const comments = await this.feedbackService.getFeedbackComments(
+        productRequestsId,
+      );
+      res.status(200).json(comments);
+    } catch (error) {
+      res.status(404).json({ message: 'There was an error.' });
+    }
+  }
   @Post()
   async createFeedback(
     @Res() res,
