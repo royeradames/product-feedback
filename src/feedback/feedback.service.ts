@@ -28,6 +28,10 @@ export class FeedbackService {
       throw new Error('There was an error');
     }
   }
+  // get all feedbacks with status of suggestion
+  getProductFeedbackSuggestions() {
+    return db('productRequests').where({ status: 'suggestion' });
+  }
 
   // get all feedbacks with status of planned
   getfeedbackStatusInProgress() {
