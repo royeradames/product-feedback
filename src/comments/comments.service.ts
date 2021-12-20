@@ -19,6 +19,15 @@ export class CommentsService {
       throw error(error);
     }
   }
+  // delete a comment
+  async deleteComment(commentId: number) {
+    try {
+      const deletedCommentId = await db('comments').where({ commentId }).del();
+      return deletedCommentId;
+    } catch (error) {
+      throw error(error);
+    }
+  }
   // create a repl
   async createReply(reply: Reply) {
     try {
