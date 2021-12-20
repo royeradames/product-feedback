@@ -37,6 +37,14 @@ export class FeedbackService {
       return { message: 'There was an error' };
     }
   }
+  // get all productFeedback roadmap (planned, in-progress, and live)
+  getFeedbackStatusLive() {
+    try {
+      return db('productRequests').where({ status: 'live' });
+    } catch (error) {
+      return { message: 'There was an error' };
+    }
+  }
 
   // get feedback comments and replys
   async getFeedbackComments(productRequestsId: number) {
