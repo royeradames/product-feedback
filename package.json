@@ -24,6 +24,7 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "class-validator": "^0.13.2",
     "knex": "^0.95.14",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
