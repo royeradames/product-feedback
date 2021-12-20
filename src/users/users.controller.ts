@@ -38,4 +38,36 @@ export class UsersController {
       res.status(404).json(error);
     }
   }
+  @Post()
+  async createUser(
+    @Res() res,
+    @Body('image') image: User['image'],
+    @Body('name') name: User['name'],
+    @Body('username') username: User['username'],
+  ) {
+    /* validation */
+    const userValidation = new usersValidation();
+    userValidation.image = image;
+    userValidation.name = name;
+    userValidation.username = username;
+    try {
+      await validateOrReject(userValidation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+    /* create new use */
+    const user: User = {
+      image,
+      name,
+      username,
+    };
+    try {
+      const newUserId = await this.usersService.createUser(user);
+      res.status(201).json(newUserId);
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
 }
