@@ -45,6 +45,14 @@ export class FeedbackService {
       return { message: 'There was an error' };
     }
   }
+  // get all productFeedbac planned with status planned
+  getfeedbackStatusPlanned() {
+    try {
+      return db('productRequests').where({ status: 'planned' });
+    } catch (error) {
+      return { message: 'There was an error' };
+    }
+  }
   // get all productFeedback with status of live
   getFeedbackStatusLive() {
     try {
