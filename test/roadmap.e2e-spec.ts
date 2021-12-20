@@ -20,4 +20,22 @@ describe('roadmap page (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
   });
+
+  it('render feedback planned', async () => {
+    const res = await request(app.getHttpServer()).get(
+      `/feedback/status/planned`,
+    );
+    expect(res.status).toBe(200);
+    // check that all the feedback the spected fields
+    res.body?.forEach((feedback) => {
+      expect(feedback).toMatchObject({
+        productRequestsId: expect.any(Number),
+        title: expect.any(String),
+        category: expect.any(String),
+        upvotes: expect.any(Number),
+        status: expect.any(String),
+        description: expect.any(String),
+      });
+    });
+  });
 });
