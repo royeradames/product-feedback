@@ -45,4 +45,16 @@ export class FeedbackService {
       throw error(error);
     }
   }
+
+  // update a feedback
+  async updateFeedback(id: number, newFeedback: NewFeedback) {
+    try {
+      await db('productRequests')
+        .where({ productRequestsId: id })
+        .update(newFeedback);
+      return { message: 'Feedback updated successfully' };
+    } catch (error) {
+      throw error(error);
+    }
+  }
 }
