@@ -38,4 +38,20 @@ describe('suggestion page (e2e)', () => {
       });
     });
   });
+  it('very suggestion call is empty when there is no suggestions ', async () => {
+    // delete all suggestion feedback
+    await db('productRequests').truncate();
+
+    // check response
+    const feedbackListAfterDelete = await request(app.getHttpServer()).get(
+      `/feedback/status/suggestions`,
+    );
+    expect(feedbackListAfterDelete.status).toBe(200);
+
+    // check that all the feedback the spected fields
+    expect(feedbackListAfterDelete.body).toEqual([]);
+
+    // reset template data
+    await db.seed.run();
+  });
 });
