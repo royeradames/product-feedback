@@ -37,7 +37,7 @@ export class FeedbackService {
       return { message: 'There was an error' };
     }
   }
-  // get all productFeedback roadmap (planned, in-progress, and live)
+  // get all productFeedback with status of live
   getFeedbackStatusLive() {
     try {
       return db('productRequests').where({ status: 'live' });
