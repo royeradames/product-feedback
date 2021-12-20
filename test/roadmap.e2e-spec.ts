@@ -55,4 +55,19 @@ describe('roadmap page (e2e)', () => {
       });
     });
   });
+  it('get all feedback with status live', async () => {
+    const res = await request(app.getHttpServer()).get(`/feedback/status/live`);
+    expect(res.status).toBe(200);
+    // check that all the feedback the spected fields
+    res.body?.forEach((feedback) => {
+      expect(feedback).toMatchObject({
+        productRequestsId: expect.any(Number),
+        title: expect.any(String),
+        category: expect.any(String),
+        upvotes: expect.any(Number),
+        status: 'live',
+        description: expect.any(String),
+      });
+    });
+  });
 });
