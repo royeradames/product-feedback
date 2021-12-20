@@ -54,4 +54,11 @@ describe('suggestion page (e2e)', () => {
     // reset template data
     await db.seed.run();
   });
+  it('increment upvotes', async () => {
+    const res = await request(app.getHttpServer()).put(`/feedback/1/upvotes`);
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({
+      message: 'Feedback upvoted successfully',
+    });
+  });
 });
