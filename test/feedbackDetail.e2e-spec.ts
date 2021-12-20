@@ -36,4 +36,19 @@ describe('feedback detail page', () => {
       description: expect.any(String),
     });
   });
+  // get feedback comments and replies
+  it('get feedback comments and replies', async () => {
+    const res = await request(app.getHttpServer()).get(`/feedback/1/comments`);
+    expect(res.status).toBe(200);
+    // check that all the feedback comments and replies have the spected fields
+    res.body?.forEach((comment) => {
+      expect(comment).toMatchObject({
+        commentsId: expect.any(Number),
+        productRequestsId: expect.any(Number),
+        content: expect.any(String),
+        replyingTo: expect.any(String),
+        userId: expect.any(Number),
+      });
+    });
+  });
 });
