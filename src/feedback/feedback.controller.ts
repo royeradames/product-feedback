@@ -78,6 +78,10 @@ export class FeedbackController {
   getfeedbackPlanned() {
     return this.feedbackService.getfeedbackStatusPlanned();
   }
+  @Get('/status/live')
+  getFeedbackLive() {
+    return this.feedbackService.getFeedbackStatusLive();
+  }
   @Post()
   async createFeedback(
     @Res() res,
