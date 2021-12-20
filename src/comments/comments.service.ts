@@ -19,4 +19,13 @@ export class CommentsService {
       throw error(error);
     }
   }
+  // create a repl
+  async createReply(reply: Reply) {
+    try {
+      const [newReplyId] = await db('comments').insert(reply);
+      return newReplyId;
+    } catch (error) {
+      throw error(error);
+    }
+  }
 }
