@@ -37,3 +37,6 @@ lerna-debug.log*
 # database
 src/db/product-feedback.db3
 src/db/sql_queries/*
+
+#vscode
+.vscode/
