@@ -33,7 +33,7 @@ describe('suggestion page (e2e)', () => {
         title: expect.any(String),
         category: expect.any(String),
         upvotes: expect.any(Number),
-        status: expect.any(String),
+        status: 'suggestion',
         description: expect.any(String),
       });
     });
