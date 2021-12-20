@@ -28,7 +28,6 @@ export class FeedbackService {
       throw new Error('There was an error');
     }
   }
-
   // create a new feedback
   async createFeedback(newFeedbackInput: NewFeedback) {
     // initialize upvotes
@@ -53,6 +52,17 @@ export class FeedbackService {
         .where({ productRequestsId: id })
         .update(newFeedback);
       return { message: 'Feedback updated successfully' };
+    } catch (error) {
+      throw error(error);
+    }
+  }
+
+  // delete feedback and all its comments
+  async deleteFeedback(id: number) {
+    try {
+      await db('comments').where({ productRequestsId: id }).del();
+      await db('productRequests').where({ productRequestsId: id }).del();
+      return { message: 'Feedback deleted successfully' };
     } catch (error) {
       throw error(error);
     }
