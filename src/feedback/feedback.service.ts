@@ -28,6 +28,19 @@ export class FeedbackService {
       throw new Error('There was an error');
     }
   }
+
+  // get feedback comments and replys
+  async getFeedbackComments(productRequestsId: number) {
+    try {
+      const comments = await db('comments')
+        .join('users', 'users.userId', 'comments.userId')
+        .where({ productRequestsId });
+
+      return comments;
+    } catch (error) {
+      return { message: 'There was an error' };
+    }
+  }
   // create a new feedback
   async createFeedback(newFeedbackInput: NewFeedback) {
     // initialize upvotes
