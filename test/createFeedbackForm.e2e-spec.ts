@@ -70,6 +70,19 @@ describe('AppController (e2e)', () => {
         //store the feedback id
         newFeedback.newFeedbackId = createdFeedback.body.productRequestsId;
       });
+      it(`created feedback can be call as expected`, async () => {
+        const res = await request(app.getHttpServer()).get(
+          `/feedback/${newFeedback.newFeedbackId}`,
+        );
+        expect(res.status).toBe(200);
+        expect(res.body).toMatchObject({
+          productRequestsId: expect.any(Number),
+          title: expect.any(String),
+          description: expect.any(String),
+          category: expect.any(String),
+          status: expect.any(String),
+        });
+      });
     });
   });
 });
