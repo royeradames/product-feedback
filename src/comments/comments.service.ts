@@ -4,5 +4,8 @@ export type Comment = {
   content: string;
   userId: number;
 };
+export interface Reply extends Comment {
+  replyingTo: string;
+}
 @Injectable()
 export class CommentsService {}
