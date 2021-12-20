@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { FeedbackService, NewFeedback, EditFeedback } from './feedback.service';
 import FeedbackValitation from './feedbackValidation';
@@ -104,6 +113,32 @@ export class FeedbackController {
         newFeedback,
       );
       res.status(200).json(updateMessage);
+    } catch (error) {
+      res.status(404).json(error);
+    }
+  }
+  @Delete('/:productRequestsId')
+  async deleteFeedback(
+    @Res() res,
+    @Param('productRequestsId') productRequestsId: number,
+  ) {
+    /* validation */
+    const feedbackValitation = new FeedbackValitation();
+    feedbackValitation.productRequestsId = productRequestsId;
+    try {
+      await validateOrReject(feedbackValitation, {
+        skipMissingProperties: true,
+      });
+    } catch (errors) {
+      res.status(422).json(errors);
+    }
+
+    /* delete feedback */
+    try {
+      const SuccessMessage = await this.feedbackService.deleteFeedback(
+        productRequestsId,
+      );
+      res.status(200).json(SuccessMessage);
     } catch (error) {
       res.status(404).json(error);
     }
