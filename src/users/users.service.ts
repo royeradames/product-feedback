@@ -36,4 +36,13 @@ export class UsersService {
       throw error(error);
     }
   }
+
+  async deleteUser(userId: number) {
+    try {
+      const deletedUserId = await db('users').where({ userId }).del();
+      return deletedUserId;
+    } catch (error) {
+      throw error(error);
+    }
+  }
 }
