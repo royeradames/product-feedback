@@ -21,7 +21,7 @@ describe('roadmap page (e2e)', () => {
     await app.init();
   });
 
-  it('render feedback planned', async () => {
+  it('get all feedback wiwth status planned', async () => {
     const res = await request(app.getHttpServer()).get(
       `/feedback/status/planned`,
     );
@@ -33,7 +33,7 @@ describe('roadmap page (e2e)', () => {
         title: expect.any(String),
         category: expect.any(String),
         upvotes: expect.any(Number),
-        status: expect.any(String),
+        status: 'planned',
         description: expect.any(String),
       });
     });
