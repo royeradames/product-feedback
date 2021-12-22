@@ -13,6 +13,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
+    "build:db": "cd dist && knex migrate:rollback && knex migrate:latest && knex seed:run && cd ..",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "cross-env DB_ENV=testing jest --watch -f --runInBand",
