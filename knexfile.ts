@@ -50,9 +50,11 @@ export default {
     },
     migrations: {
       directory: './src/db/migrations',
+      loadExtensions: ['.js'],
     },
     seeds: {
       directory: './src/db/seeds',
+      loadExtensions: ['.js'],
     },
   },
 };
